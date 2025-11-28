@@ -3,12 +3,30 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shop_app/controllers/auth_controller.dart';
 import 'package:shop_app/views/screens/authentication_screen/login_screen.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
+
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  late AuthController _authController = AuthController();
+  final AuthController _authController = AuthController();
   late String email;
   late String fullName;
   late String password;
+  bool _isLoading =  false;
+  registerUser() async{
+    setState(() {
+      _isLoading = true;
+    });
+    await _authController.signUpUsers(context: context, fullName: fullName, email: email, password: password).whenComplete((){
+      setState(() {
+        _isLoading = false;
+      }) ;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -167,14 +185,14 @@ class RegisterScreen extends StatelessWidget {
                       suffixIcon: Icon(Icons.visibility),
                     ),
                   ),
-              
+
                   SizedBox(
                     height: 30,
                   ),
                   InkWell(
                     onTap: () async {
                       if(_formKey.currentState!.validate()){
-                        await _authController.signUpUsers(context: context, email: email, fullName: fullName, password: password);
+                        registerUser();
                       }
                     },
                     child: Container(
@@ -190,7 +208,8 @@ class RegisterScreen extends StatelessWidget {
                         ),
                       ),
                       child: Center(
-                        child: Text(
+                        child: _isLoading
+                            ? const CircularProgressIndicator(color: Colors.white,): Text(
                           'Sign Up',
                           style: GoogleFonts.getFont(
                               'Lato',

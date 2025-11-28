@@ -16,6 +16,19 @@ class _LoginScreenState extends State<LoginScreen> {
   final AuthController _authController = AuthController();
   late String email;
   late String password;
+  bool isLoading = false;
+
+  loginUser()async {
+    setState(() {
+      isLoading = true;
+    });
+    await _authController.signInUsers(
+        context: context, email: email, password: password).whenComplete((){
+          setState(() {
+            isLoading = false;
+          });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -138,11 +151,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
               
                   InkWell(
-                    onTap: () async {
+                    onTap: () {
                       if(_formKey.currentState!.validate()){
-                        await _authController.signInUsers(context: context, email: email, password: password);
+                        loginUser();
                       }else{
-                        print('failed');
+                        setState(() {
+                          isLoading = false; // stop loading if validation fails
+                        });
                       }
                     },
                     child: Container(
@@ -158,7 +173,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       child: Center(
-                          child: Text(
+                          child: isLoading
+                              ? const CircularProgressIndicator(
+                            color: Colors.white,) :
+                          Text(
                               'Sign in',
                             style: GoogleFonts.getFont(
                                 'Lato',
