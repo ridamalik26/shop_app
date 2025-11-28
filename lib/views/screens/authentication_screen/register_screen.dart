@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shop_app/controllers/auth_controller.dart';
 import 'package:shop_app/views/screens/authentication_screen/login_screen.dart';
 
 class RegisterScreen extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  late AuthController _authController = AuthController();
+  late String email;
+  late String fullName;
+  late String password;
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +52,9 @@ class RegisterScreen extends StatelessWidget {
                         letterSpacing:  0.2,
                       ),),
                   ),TextFormField(
+                    onChanged: (value){
+                      fullName = value;
+                    },
                     validator: (value) {
                       if(value!.isEmpty){
                         return " Enter your full name";
@@ -89,6 +97,9 @@ class RegisterScreen extends StatelessWidget {
                         letterSpacing:  0.2,
                       ),),
                   ),TextFormField(
+                    onChanged: (value){
+                      email = value;
+                    },
                     validator: (value){
                       if(value!.isEmpty){
                         return 'enter your email';
@@ -121,6 +132,9 @@ class RegisterScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 30,),
                   TextFormField(
+                    onChanged: (value){
+                      password = value;
+                    },
                     validator: (value){
                       if(value!.isEmpty){
                         return 'enter your password';
@@ -158,11 +172,9 @@ class RegisterScreen extends StatelessWidget {
                     height: 30,
                   ),
                   InkWell(
-                    onTap: (){
+                    onTap: () async {
                       if(_formKey.currentState!.validate()){
-                        print('correct');
-                      } else {
-                        print('failed');
+                        await _authController.signUpUsers(context: context, email: email, fullName: fullName, password: password);
                       }
                     },
                     child: Container(
