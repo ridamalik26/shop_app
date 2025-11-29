@@ -76,7 +76,7 @@ class AuthController {
         response: response,
         context: context,
         onSuccess: () {
-          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> const MainScreen()), (route) => false);
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> MainScreen()), (route) => false);
           showSnackBar(context, "Login Successful");
         },
       );
