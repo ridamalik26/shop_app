@@ -8,7 +8,7 @@ class SubcategoryController{
   Future<List<Subcategory>> getSubCategoriesByCategoryName(
       String categoryName) async {
     try{
-      http.Response response = await http.get(Uri.parse("$uri//api/category/categoryName/subcategories"),
+      http.Response response = await http.get(Uri.parse("$uri/api/category/$categoryName/subcategories"),
         headers: <String, String>{
           "Content-Type": 'application/json; charset=UTF-8'
         },

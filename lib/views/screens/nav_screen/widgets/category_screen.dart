@@ -110,17 +110,19 @@ class _CategoryScreenState extends State<CategoryScreen> {
                     shrinkWrap: true,
                       itemCount: _subcategories.length,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          mainAxisSpacing: 4,
-                          crossAxisSpacing: 8,
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 1,
+                          crossAxisSpacing: 2,
+                        childAspectRatio: 0.99,
                       ),
                       itemBuilder: (context, index){
                         final subcategory = _subcategories[index];
                         return Column(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
                             Container(
-                              width: 50,
-                              height: 50,
+                              height: 80,
+                              width: 80,
                               decoration: BoxDecoration(
                                 color: Colors.grey.shade200,
                               ),
@@ -131,7 +133,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                 ),
                               ),
                             ),
-                            Center(child: Text(subcategory.subCategoryName,),),
+                            const SizedBox(height: 6),
+
+                            Center(child: Text(
+                              maxLines: 3,
+                              subcategory.subCategoryName,),),
                           ]
                         );
                       }
