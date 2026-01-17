@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shop_app/controllers/subcategory_controller.dart';
+import 'package:shop_app/models/subcategory.dart';
 import 'package:shop_app/views/screens/nav_screen/widgets/header_widget.dart';
 
 import '../../../../controllers/category_controller.dart';
@@ -16,6 +18,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
   //a future that will hold the list of categories once loaded from the api
   late Future<List<Category>> futureCategories;
   Category? _selectedCategory;
+  List<Subcategory> _subcategories = [];
+  final SubcategoryController _subcategoryController = SubcategoryController();
 
   @override
   void initState(){
@@ -23,6 +27,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
     super.initState();
     futureCategories = CategoryController().loadCategories();
   }
+
+  Future<void> _loadSubcategories(String categoryName)async{
+    final subcategories = await _subcategoryController.getSubCategoriesByCategoryName(categoryName);
+    setState(() {
+      _subcategories = subcategories;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,6 +65,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                               setState(() {
                                 _selectedCategory = category;
                               });
+                              _loadSubcategories(category.name);
                             },
                             title: Text(category.name,style: GoogleFonts.quicksand(
                               fontSize: 12,
@@ -92,7 +105,37 @@ class _CategoryScreenState extends State<CategoryScreen> {
                         ),
                       ),
                     ),
-                  )
+                  ),
+                  GridView.builder(
+                    shrinkWrap: true,
+                      itemCount: _subcategories.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          mainAxisSpacing: 4,
+                          crossAxisSpacing: 8,
+                      ),
+                      itemBuilder: (context, index){
+                        final subcategory = _subcategories[index];
+                        return Column(
+                          children: [
+                            Container(
+                              width: 50,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                              ),
+                              child: Center(
+                                child: Image.network(
+                                  subcategory.image,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            Center(child: Text(subcategory.subCategoryName,),),
+                          ]
+                        );
+                      }
+                  ),
                 ],
               ):Container()
           )
