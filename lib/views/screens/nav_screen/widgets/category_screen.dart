@@ -26,6 +26,20 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
     super.initState();
     futureCategories = CategoryController().loadCategories();
+    //once the categories are loaded process then
+    futureCategories.then((categories){
+      //iterate through the categories to find the "Clothes" Category
+      for(var category in categories){
+        if(category.name == "clothes"){
+          //if "clothes " category is found, set it as the selected category
+          setState(() {
+            _selectedCategory = category;
+          });
+          //load subcategories for the "clothes" category
+          _loadSubcategories(category.name);
+        }
+      }
+    });
   }
 
   Future<void> _loadSubcategories(String categoryName)async{
@@ -137,7 +151,13 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
                             Center(child: Text(
                               maxLines: 3,
-                              subcategory.subCategoryName,),),
+                              subcategory.subCategoryName,
+                              style: GoogleFonts.quicksand(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            ),
                           ]
                         );
                       }
