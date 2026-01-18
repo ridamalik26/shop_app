@@ -5,6 +5,7 @@ import 'package:shop_app/models/category.dart' as model;
 import 'package:shop_app/models/category.dart';
 import 'package:shop_app/views/screens/detail/screens/widgets/inner_banner_widget.dart';
 import 'package:shop_app/views/screens/detail/screens/widgets/inner_header_widget.dart';
+import 'package:shop_app/views/screens/detail/screens/widgets/subcategory_tile_widget.dart';
 
 import '../../../../models/subcategory.dart';
 
@@ -43,6 +44,7 @@ class _InnerCategoryScreenState extends State<InnerCategoryScreen> {
               letterSpacing: 1.7,
             ),),
             ),
+            const SizedBox(height: 10),
             FutureBuilder(
               future: _subCategories,
               builder: (context, snapshot) {
@@ -54,40 +56,42 @@ class _InnerCategoryScreenState extends State<InnerCategoryScreen> {
                   return const Center(child: Text('No Categories'));
                 } else {
                   final subcategories = snapshot.data!;
-                  return GridView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: subcategories.length,
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      mainAxisSpacing: 8,
-                      crossAxisSpacing: 8,
-                    ),
-                    itemBuilder: (context, index) {
-                      final subcategory = subcategories[index];
-                      return InkWell(
-                        onTap:(){
+                  return SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Column(
+                      children: List.generate(
+                        (subcategories.length / 7).ceil(),
+                            (setIndex) {
+                          // for each row, calculate the starting and ending indices
+                          final start = setIndex * 7;
+                          final end = (setIndex + 1) * 7;
 
+                          // Create a padding widget to add spacing around the row
+                          return Padding(
+                            padding: EdgeInsets.all(8.9),
+                            child: Row(
+                              // create a row of the subcategory tile
+                              children: subcategories
+                                  .sublist(
+                                start,
+                                end > subcategories.length
+                                    ? subcategories.length
+                                    : end,
+                              )
+                                  .map(
+                                    (subcategory) => SubcategoryTileWidget(
+                                  image: subcategory.image,
+                                      title: subcategory.subCategoryName,
+                                ),
+                              )
+                                  .toList(),
+                            ),
+                          );
                         },
-                        child: Column(
-                          children: [
-                            Image.network(
-                              subcategory.image,
-                              height: 47,
-                              width: 47,
-                            ),
-                            Text(
-                              subcategory.subCategoryName,
-                              style: GoogleFonts.quicksand(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
+                      ),
+                    ),
                   );
+
                 }
               },
             ),
