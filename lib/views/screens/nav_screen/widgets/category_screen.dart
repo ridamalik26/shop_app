@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shop_app/controllers/subcategory_controller.dart';
 import 'package:shop_app/models/subcategory.dart';
+import 'package:shop_app/views/screens/detail/screens/widgets/subcategory_tile_widget.dart';
 import 'package:shop_app/views/screens/nav_screen/widgets/header_widget.dart';
 
 import '../../../../controllers/category_controller.dart';
@@ -55,6 +56,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       appBar: PreferredSize(preferredSize: Size.fromHeight(MediaQuery.of(context).size.height *20),
           child: HeaderWidget(),),
       body: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           //left side display category
           Expanded(
@@ -95,74 +97,51 @@ class _CategoryScreenState extends State<CategoryScreen> {
           //right side - Display selected category details
           Expanded(
             flex: 5,
-              child: _selectedCategory!=null?Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(_selectedCategory!.name,
-                    style: GoogleFonts.quicksand(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 1.7,
+              child: _selectedCategory!=null?
+              SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(_selectedCategory!.name,
+                      style: GoogleFonts.quicksand(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1.7,
+                      ),
+                      ),
                     ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: 150,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(image: NetworkImage((_selectedCategory!.banner),
-                        ),
-                        fit: BoxFit.cover,
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8,2,8,4),
+                      child: Container(
+                        height: 150,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(image: NetworkImage((_selectedCategory!.banner),
+                          ),
+                          fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  GridView.builder(
-                    shrinkWrap: true,
-                      itemCount: _subcategories.length,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 1,
-                          crossAxisSpacing: 2,
-                        childAspectRatio: 0.99,
-                      ),
-                      itemBuilder: (context, index){
-                        final subcategory = _subcategories[index];
-                        return Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Container(
-                              height: 80,
-                              width: 80,
-                              decoration: BoxDecoration(
-                                color: Colors.grey.shade200,
-                              ),
-                              child: Center(
-                                child: Image.network(
-                                  subcategory.image,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 6),
-
-                            Center(child: Text(
-                              maxLines: 3,
-                              subcategory.subCategoryName,
-                              style: GoogleFonts.quicksand(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            ),
-                          ]
-                        );
-                      }
-                  ),
-                ],
+                    GridView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                        itemCount: _subcategories.length,
+                        gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 0.1,
+                            crossAxisSpacing: 2,
+                          childAspectRatio: 1.1,
+                        ),
+                        itemBuilder: (context, index){
+                          final subcategory = _subcategories[index];
+                          return SubcategoryTileWidget(image: subcategory.image, title: subcategory.subCategoryName);
+                        }
+                    ),
+                  ],
+                ),
               ):Container()
           )
         ],
