@@ -29,9 +29,10 @@ class UserProvider extends StateNotifier<User?> {
     state = User.fromJson(userJson);
   }
 
-// make the data accessible within the application
-  final userProvider =
-  StateNotifierProvider<UserProvider, User?>(
-        (ref) => UserProvider(),
-  );
 }
+
+// make the data accessible within the application
+final userProvider =
+StateNotifierProvider<UserProvider, User?>(
+      (ref) => UserProvider(),
+);
