@@ -32,7 +32,9 @@ class _InnerCategoryScreenState extends State<InnerCategoryScreen> {
     ];
 
     return Scaffold(
-
+      appBar: PreferredSize(preferredSize: Size.fromHeight(MediaQuery.of(context).size.height * 20),
+          child: const InnerHeaderWidget()
+      ),
       bottomNavigationBar: BottomNavigationBar(
           selectedItemColor: Colors.purple,
           unselectedItemColor: Colors.grey,
