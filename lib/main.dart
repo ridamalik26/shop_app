@@ -27,6 +27,8 @@ class MyApp extends ConsumerWidget {
     //if both token and user data are available, update the user state
     if(token!=null && userJson!=null){
       ref.read(userProvider.notifier).setUser(userJson);
+    }else{
+      ref.read(userProvider.notifier).signOut();
     }
   }
   // This widget is the root of your application.
