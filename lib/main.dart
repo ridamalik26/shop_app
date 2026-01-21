@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shop_app/provider/user_provider.dart';
 import 'package:shop_app/views/screens/authentication_screen/login_screen.dart';

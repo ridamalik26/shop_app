@@ -103,7 +103,7 @@ class AuthController {
       );
     } catch (e) {}
   }
-  //signout
+  //sign out
   Future<void> signOutUser({required context})async{
     try{
       SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -118,7 +118,7 @@ class AuthController {
         return const LoginScreen();
       }), (route) => false);
 
-      showSnackBar(context, 'Sign Out successfully');
+      showSnackBar(context, 'Signed Out ');
     } catch (e){
       showSnackBar(context, "error signing out");
     }
