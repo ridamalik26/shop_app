@@ -1,17 +1,13 @@
 import 'dart:convert';
-
-
 import '../global_variables.dart';
 import '../models/category.dart';
 import 'package:http/http.dart' as http;
-
-
 
 class CategoryController{
 
   Future<List<Category>> loadCategories() async{
     try{
-      http.Response response = await http.get(Uri.parse('$uri/api/categories'),
+      final response = await http.get(Uri.parse('$uri/api/categories'),
         headers: <String, String>{
           "Content-Type": 'application/json; charset=UTF-8'
         },
