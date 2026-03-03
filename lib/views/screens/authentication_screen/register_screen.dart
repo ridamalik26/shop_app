@@ -149,6 +149,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                   SizedBox(height: 30,),
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Text('Password',
+                      style: GoogleFonts.getFont(
+                        'Nunito Sans',
+                        fontWeight: FontWeight.bold,
+                        letterSpacing:  0.2,
+                      ),),
+                  ),
                   TextFormField(
                     onChanged: (value){
                       password = value;

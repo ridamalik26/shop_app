@@ -42,16 +42,18 @@ class Product {
 
   factory Product.fromMap(Map<String, dynamic> map) {
     return Product(
-      id: map['id'] as String,
-      productName: map['productName'] as String,
-      productPrice: map['productPrice'] as int,
-      quantity: map['quantity'] as int,
-      description: map['description'] as String,
-      category: map['category'] as String,
-      vendorId: map['vendorId'] as String,
-      fullName: map['fullName'] as String,
-      subCategory: map['subCategory'] as String,
-      images: List<String>.from(map['images'] as List),
+      id: map['id'] ?? '',
+      productName: map['productName'] ?? '',
+      productPrice: map['productPrice'] ?? 0,
+      quantity: map['quantity'] ?? 0,
+      description: map['description'] ?? '',
+      category: map['category'] ?? '',
+      vendorId: map['vendorId'] ?? '',
+      fullName: map['fullName'] ?? '',
+      subCategory: map['subCategory'] ?? '',
+      images: map['images'] != null
+          ? List<String>.from(map['images'])
+          : [],
     );
   }
 
