@@ -34,4 +34,40 @@ class ProductController {
       throw Exception('Error loading product : $e');
     }
   }
+  //load product by category function
+  Future<List<Product>> loadProductByCategory(String category) async {
+    try {
+      http.Response response = await http.get(
+        Uri.parse('$uri/api/products-by-category/$category'),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+
+      // 🔥 PRINT STATUS CODE
+      print("Status Code: ${response.statusCode}");
+
+      // 🔥 PRINT RAW BODY
+      print("Response Body: ${response.body}");
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body);
+
+        print("Decoded Data: $data"); // 🔥 decoded print
+
+        List<Product> products = data
+            .map((product) =>
+            Product.fromMap(product as Map<String, dynamic>))
+            .toList();
+
+        return products;
+      } else {
+        print("Error Response: ${response.body}");
+        throw Exception('Failed to load products');
+      }
+    } catch (e) {
+      print("Exception Occurred: $e");
+      rethrow;
+    }
+  }
 }
