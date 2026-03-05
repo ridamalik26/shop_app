@@ -1,10 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shop_app/models/products.dart';
 
 class ProductDetailScreen extends StatefulWidget {
-final Product product;
+  final Product product;
 
   const ProductDetailScreen({super.key, required this.product});
 
@@ -18,13 +17,76 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Product Detail',
+          widget.product.productName,
           style: GoogleFonts.quicksand(
             fontSize: 18,
             fontWeight: FontWeight.w600,
           ),
         ),
         centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.favorite),
+          )
+        ],
+      ),
+
+      //  BODY OUTSIDE APPBAR
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Center(
+            child: Container(
+              width: 260,
+              height: 275,
+              clipBehavior: Clip.hardEdge,
+              decoration: const BoxDecoration(),
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Positioned(
+                    left: 0,
+                    top: 50,
+                    child: Container(
+                      width: 260,
+                      height: 260,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFD8DDFF),
+                        borderRadius: BorderRadius.circular(130),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    left: 22,
+                    top: 0,
+                    child: Container(
+                      width: 216,
+                      height: 274,
+                      clipBehavior: Clip.hardEdge,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF9CA8FF),
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      child: PageView.builder(
+                        itemCount: widget.product.images.length,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          return Image.network(
+                            widget.product.images[index],
+                            width: 198,
+                            height: 225,
+                            fit: BoxFit.cover,
+                          );
+                        },
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          )
+        ],
       ),
     );
   }
