@@ -150,6 +150,29 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           )
         ],
       ),
+      bottomSheet: Padding(padding: EdgeInsets.all(15),
+      child: InkWell(
+        onTap: (){
+
+        },
+        child: Container(
+          width: 386,
+          height: 45,
+          clipBehavior: Clip.hardEdge,
+          decoration: BoxDecoration(
+            color: const Color(0xFF3B54EE,),
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: Center(
+            child: Text("ADD TO CART", style: GoogleFonts.mochiyPopOne(
+              fontSize: 12,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),),
+          ),
+        ),
+      ),
+      ),
     );
   }
 }

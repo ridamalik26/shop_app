@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_app/controllers/product_controller.dart';
 import 'package:shop_app/views/screens/nav_screen/widgets/product_item_widget.dart';
