@@ -1,6 +1,12 @@
 import 'package:flutter_riverpod/legacy.dart';
 import '../models/cart.dart';
 
+final cartProvider = StateNotifierProvider<CartNotifier,Map<String,Cart>>(
+    (ref){
+      return CartNotifier();
+    }
+);
+
 class CartNotifier extends StateNotifier<Map<String, Cart>> {
   CartNotifier() : super({});
 
