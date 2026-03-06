@@ -17,7 +17,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.product.productName,
+          "Popular Product",
           style: GoogleFonts.quicksand(
             fontSize: 18,
             fontWeight: FontWeight.w600,
@@ -84,6 +84,68 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   )
                 ],
               ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  widget.product.productName, style: GoogleFonts.roboto(
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1,
+                  color: Color(
+                    0xFF3C55Ef
+                  ),
+                ),
+                ),
+                Text(
+                  "\$${widget.product.productPrice}", style: GoogleFonts.roboto(
+                   fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                  color: Color(
+                      0xFF3C55Ef
+                  ),
+                ),
+                )
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(widget.product.category,
+            style: GoogleFonts.roboto(
+              color: Colors.grey,
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
+            ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "About",
+                  style: GoogleFonts.lato(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 17,
+                    letterSpacing: 1.7,
+                    color: const Color(0xFF363330),
+                  ),
+                ),
+                Text(
+                  widget.product.description,
+                  style: GoogleFonts.lato(
+                    color: Colors.black,
+                    fontSize: 15,
+                    letterSpacing: 2,
+                  ),
+                )
+              ],
             ),
           )
         ],

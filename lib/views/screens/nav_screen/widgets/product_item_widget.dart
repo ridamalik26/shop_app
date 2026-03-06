@@ -17,7 +17,7 @@ class ProductItemWidget extends StatelessWidget {
         }));
       },
       child: Container(
-        width: 170,
+        width: 130,
         margin: const EdgeInsets.symmetric(horizontal: 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -30,7 +30,7 @@ class ProductItemWidget extends StatelessWidget {
               ),
               child: Stack(
                 children: [
-                  Image.network(product.images[0], height: 170, width: 160,
+                  Image.network(product.images[0], height: 180, width: 130,
                   fit: BoxFit.cover,
                   ),
                   Positioned(
