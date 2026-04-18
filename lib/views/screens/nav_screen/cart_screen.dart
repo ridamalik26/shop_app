@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:shop_app/provider/cart_provider.dart';
 
 class CartScreen extends ConsumerStatefulWidget {
   const CartScreen({super.key});
@@ -12,6 +14,7 @@ class CartScreen extends ConsumerStatefulWidget {
 class _CartScreenState extends ConsumerState<CartScreen> {
   @override
   Widget build(BuildContext context) {
+    final cartData = ref.watch(cartProvider);
     return Scaffold(
       appBar: PreferredSize(preferredSize: Size.fromHeight(MediaQuery.of(context).size.height *0.20),
           child: Container(
@@ -51,12 +54,28 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                                 ),
                               ),
                               child: Center(
-                                child: Text('1', style: TextStyle() ,),
+                                child: Text(cartData.length.toString() ,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 11,
+                                ) ,),
                               ),
                             ),
                         ),
                       ],
                     ),
+                ),
+                Positioned(
+                    left: 61,
+                    top: 51,
+                    child: Text('My Cart',
+                    style: GoogleFonts.lato(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    )
                 )
               ],
             ),
