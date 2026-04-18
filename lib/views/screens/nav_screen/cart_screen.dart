@@ -81,6 +81,76 @@ class _CartScreenState extends ConsumerState<CartScreen> {
             ),
           ),
       ),
+      body: cartData.isEmpty?Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              textAlign: TextAlign.center,
+                'your shopping cart is empty \n you can add product to your cart from the button below',
+            style: GoogleFonts.roboto(
+            fontSize: 15,
+            letterSpacing: 1.7,
+            ),
+            ),
+            TextButton(onPressed: (){}, child: const Text('Shop Now'),)
+          ],
+        ),
+      ):SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 49,
+              clipBehavior: Clip.hardEdge,
+              decoration: const BoxDecoration(),
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Positioned(
+                    left: 0,
+                    top: 0,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 49,
+                      clipBehavior: Clip.hardEdge,
+                      decoration: const BoxDecoration(
+                        color: Color(0xFFD7DDFF)
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    left: 44,
+                    top: 19,
+                    child: Container(
+                      width: 10,
+                      height: 10,
+                      clipBehavior: Clip.hardEdge,
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(5)
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    left: 69,
+                    top: 14,
+                    child: Text('You Have ${cartData.length} items',
+                    style: GoogleFonts.lato(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.7,
+                    ),
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
