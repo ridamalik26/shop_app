@@ -18,6 +18,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
   Widget build(BuildContext context) {
     final cartData = ref.watch(cartProvider);
     final _cartProvider = ref.read(cartProvider.notifier);
+    final totalAmount = ref.read(cartProvider.notifier).calculateTotalAmount();
     return Scaffold(
       appBar: PreferredSize(preferredSize: Size.fromHeight(MediaQuery.of(context).size.height *0.20),
           child: Container(
@@ -251,6 +252,90 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                     ),
                   );
                 }
+            )
+          ],
+        ),
+      ),
+      bottomNavigationBar:  Container(
+        width: 416,
+        height: 89,
+        clipBehavior: Clip.hardEdge,
+        decoration: const BoxDecoration(),
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Align(
+              alignment: Alignment.center,
+              child: Container(
+                width: 416,
+                height: 89,
+                clipBehavior: Clip.hardEdge,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                    color: const Color(
+                      0xFFC4C4C4,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment(-0.63, -0.26),
+              child: Text(
+                'Subtotal', 
+                style: GoogleFonts.roboto(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: const Color(0xFFA1A1A1)
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment(-0.19, -0.31),
+              child: Text("\$${totalAmount.toStringAsFixed(2)}",
+              style: GoogleFonts.roboto(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xFFFF6464),
+              ),
+              ),
+            ),
+            Align(
+              alignment: Alignment(0.83, -1),
+              child: InkWell(
+                onTap: (){
+
+                },
+                child: Container(
+                  width: 166,
+                  height: 71,
+                  clipBehavior: Clip.hardEdge,
+                  decoration: BoxDecoration(
+                    color: totalAmount==0.0?Colors.grey: const Color(
+                      0xFF1532E7
+                    )
+                  ),
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Checkout', style: GoogleFonts.roboto(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold
+                          ),),
+                          Icon(Icons.arrow_forward_ios,
+                          color: Colors.white,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             )
           ],
         ),
