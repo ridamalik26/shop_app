@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shop_app/provider/cart_provider.dart';
+import 'package:shop_app/views/screens/main_screen.dart';
 
 class CartScreen extends ConsumerStatefulWidget {
   const CartScreen({super.key});
@@ -15,6 +17,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
   @override
   Widget build(BuildContext context) {
     final cartData = ref.watch(cartProvider);
+    final _cartProvider = ref.read(cartProvider.notifier);
     return Scaffold(
       appBar: PreferredSize(preferredSize: Size.fromHeight(MediaQuery.of(context).size.height *0.20),
           child: Container(
@@ -93,7 +96,11 @@ class _CartScreenState extends ConsumerState<CartScreen> {
             letterSpacing: 1.7,
             ),
             ),
-            TextButton(onPressed: (){}, child: const Text('Shop Now'),)
+            TextButton(onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context){
+                return MainScreen();
+              }));
+            }, child: const Text('Shop Now'),)
           ],
         ),
       ):SingleChildScrollView(
@@ -147,6 +154,103 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                   )
                 ],
               ),
+            ),
+            ListView.builder(
+                shrinkWrap: true,
+                itemCount: cartData.length,
+                itemBuilder: (context, index){
+                  final cartItem = cartData.values.toList()[index];
+                  return Card(
+                    child: SizedBox(
+                      height: 200,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: 100,
+                            width: 100,
+                            child: Image.network(
+                                cartItem.image[0],
+                                fit: BoxFit.cover,
+                            ),
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(cartItem.productName,
+                              style: GoogleFonts.lato(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600
+                              ),
+                              ),
+                              Text(cartItem.category,
+                              style: GoogleFonts.roboto(
+                                color: Colors.grey,
+                                fontSize: 14,
+                              ),
+                              ),
+                              Text(
+                                "\$${cartItem.productPrice.toStringAsFixed(2)}",
+                              style: GoogleFonts.lato(
+                                color: Colors.pink,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              ),
+                              Row(
+                                children: [
+                                  Container(
+                                    height: 40,
+                                    width: 120,
+                                    decoration: const BoxDecoration(
+                                      color: Color(
+                                        0xFF102DE1,
+                                      ),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        IconButton(onPressed: (){
+                                            _cartProvider.decrementCartItem(
+                                              cartItem.productId
+                                            );
+                                        }, icon: Icon(CupertinoIcons.minus,
+                                          color: Colors.white,
+                                        ),
+                                        ),
+                                        Text(
+                                          cartItem.quantity.toString(),
+                                          style: TextStyle(
+                                            color: Colors.white
+                                          ),
+                                        ),
+                                        IconButton(onPressed: (){
+                                          _cartProvider.incrementCartItem(
+                                            cartItem.productId
+                                          );
+                                        }, icon: Icon(CupertinoIcons.plus,
+                                          color: Colors.white,
+                                        ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                              IconButton(onPressed: () {
+                                _cartProvider.removeCartItem(cartItem.productId);
+                              },
+                                icon: const Icon(
+                                CupertinoIcons.delete,
+                              ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }
             )
           ],
         ),
