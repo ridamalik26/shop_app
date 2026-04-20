@@ -1,17 +1,19 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shop_app/provider/cart_provider.dart';
 
-class CheckoutScreen extends StatefulWidget {
+class CheckoutScreen extends ConsumerStatefulWidget {
   const CheckoutScreen({super.key});
 
   @override
-  State<CheckoutScreen> createState() => _CheckoutScreenState();
+  _CheckoutScreenState createState() => _CheckoutScreenState();
 }
 
-class _CheckoutScreenState extends State<CheckoutScreen> {
+class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
   @override
   Widget build(BuildContext context) {
+    final cartData = ref.read(cartProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Checkout'),
@@ -96,6 +98,118 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     ],
                   ),
                 ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text('Your Item', style: GoogleFonts.quicksand(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+              ),
+              Flexible(child: ListView.builder(
+                  itemCount: cartData.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index){
+                    final cartItem = cartData.values.toList()[index];
+                    return InkWell(
+                      onTap: (){
+
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        height: 91,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(
+                            color: Color(
+                              0xFFEFF0F2
+                            )
+                          ),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            Positioned(
+                                left: 6,
+                                top: 6,
+                                child: SizedBox(
+                                     width: 311,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        width: 78,
+                                        height: 78,
+                                        clipBehavior: Clip.hardEdge,
+                                        decoration: const BoxDecoration(
+                                          color: Colors.white
+                                        ),
+                                        child: Image.network(cartItem.image[0], fit: BoxFit.contain,),
+                                      ),
+                                      const SizedBox(
+                                        width: 11,
+                                      ),
+                                      Expanded(child: Container(
+                                        height: 78,
+                                        alignment: Alignment(0, -0.51),
+                                        child: SizedBox(
+                                          width: double.infinity,
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              SizedBox(
+                                                width: double.infinity,
+                                                child: Text(
+                                                  cartItem.productName,
+                                                  style: GoogleFonts.quicksand(
+                                                    fontWeight: FontWeight.bold,
+                                                    letterSpacing: 1.3,
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                height: 4,
+                                              ),
+                                              Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Text(
+                                                  cartItem.category,
+                                                  style: GoogleFonts.lato(
+                                                    color: Colors.blueGrey,
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w400
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      ),
+                                      const SizedBox(
+                                        width: 16,
+                                      ),
+                                      Text("\$${cartItem.productPrice.toDouble().toStringAsFixed(2)}",
+                                      style: GoogleFonts.robotoSerif(
+                                        fontSize: 14,
+                                        color: Colors.pink,
+                                        fontWeight: FontWeight.bold,
+                                        letterSpacing: 1.3
+                                      )
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }
+              )
               )
             ],
           ),

@@ -173,7 +173,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                             width: 100,
                             child: Image.network(
                                 cartItem.image[0],
-                                fit: BoxFit.cover,
+                                fit: BoxFit.contain,
                             ),
                           ),
                           Column(
