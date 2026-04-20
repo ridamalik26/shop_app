@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shop_app/provider/cart_provider.dart';
+import 'package:shop_app/views/screens/detail/screens/checkout_screen.dart';
 import 'package:shop_app/views/screens/main_screen.dart';
 
 class CartScreen extends ConsumerStatefulWidget {
@@ -256,8 +257,8 @@ class _CartScreenState extends ConsumerState<CartScreen> {
           ],
         ),
       ),
-      bottomNavigationBar:  Container(
-        width: 416,
+      bottomNavigationBar: Container(
+        width: double.infinity,
         height: 89,
         clipBehavior: Clip.hardEdge,
         decoration: const BoxDecoration(),
@@ -267,7 +268,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
             Align(
               alignment: Alignment.center,
               child: Container(
-                width: 416,
+                width: double.infinity,
                 height: 89,
                 clipBehavior: Clip.hardEdge,
                 decoration: BoxDecoration(
@@ -305,7 +306,9 @@ class _CartScreenState extends ConsumerState<CartScreen> {
               alignment: Alignment(0.83, -1),
               child: InkWell(
                 onTap: (){
-
+                  Navigator.push(context, MaterialPageRoute(builder: (context){
+                    return CheckoutScreen();
+                  }));
                 },
                 child: Container(
                   width: 166,

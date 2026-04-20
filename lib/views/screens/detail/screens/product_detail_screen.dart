@@ -164,7 +164,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
               image: widget.product.images,
               vendorId: widget.product.vendorId,
               productQuantity: widget.product.quantity,
-              quantity: widget.product.quantity,
+              quantity: 1,
               productId: "${widget.product.id}_${widget.product.images[0]}",
               description: widget.product.description,
               fullName: widget.product.fullName
