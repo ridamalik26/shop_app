@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shop_app/controllers/order_controller.dart';
 import 'package:shop_app/provider/cart_provider.dart';
+import 'package:shop_app/views/screens/detail/screens/shipping_address_screen.dart';
 
 class CheckoutScreen extends ConsumerStatefulWidget {
   const CheckoutScreen({super.key});
@@ -12,9 +14,12 @@ class CheckoutScreen extends ConsumerStatefulWidget {
 
 class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
   String selectPaymentMethod = 'stripe';
+  bool _showAddressPrompt = false;
+  final OrderController _orderController = OrderController();
   @override
   Widget build(BuildContext context) {
     final cartData = ref.read(cartProvider);
+    final _cartProvider = ref.read(cartProvider.notifier);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Checkout'),
@@ -72,7 +77,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              'United State',
+                              'United States',
                               style: GoogleFonts.lato(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
@@ -220,36 +225,40 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                 fontWeight: FontWeight.bold,
               ),
               ),
-              RadioGroup<String>(
-                groupValue: selectPaymentMethod,
-                onChanged: (String? value) {
-                  setState(() {
-                    selectPaymentMethod = value!;
-                  });
-                },
-                child: Column(
-                  children: [
-                    RadioListTile<String>(
-                      title: Text(
-                        'Stripe',
-                        style: GoogleFonts.montserrat(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
+              Column(
+                children: [
+                  RadioListTile<String>(
+                    title: Text(
+                      'Stripe',
+                      style: GoogleFonts.montserrat(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
                       ),
-                      value: 'stripe',
                     ),
-                    RadioListTile<String>(
-                      title: Text(
-                        'Cash on Delivery',
-                        style: GoogleFonts.montserrat(
-                          fontWeight: FontWeight.bold,
-                        ),
+                    value: 'stripe',
+                    groupValue: selectPaymentMethod,
+                    onChanged: (String? value) {
+                      setState(() {
+                        selectPaymentMethod = value!;
+                      });
+                    },
+                  ),
+                  RadioListTile<String>(
+                    title: Text(
+                      'Cash on Delivery',
+                      style: GoogleFonts.montserrat(
+                        fontWeight: FontWeight.bold,
                       ),
-                      value: 'cashOnDelivery',
                     ),
-                  ],
-                ),
+                    value: 'cashOnDelivery',
+                    groupValue: selectPaymentMethod,
+                    onChanged: (String? value) {
+                      setState(() {
+                        selectPaymentMethod = value!;
+                      });
+                    },
+                  ),
+                ],
               )
             ],
           ),
@@ -259,23 +268,46 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
         padding: const EdgeInsets.fromLTRB(25, 12, 25, 24),
         child: SizedBox(
           height: 58,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF3854EE),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
-            ),
-            onPressed: () {},
-            child: Text(
-              selectPaymentMethod == 'stripe' ? 'Pay Now' : 'Place Order',
-              style: GoogleFonts.montserrat(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ),
-            ),
-          ),
+          child: _showAddressPrompt
+              ? GestureDetector(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context){
+                      return const ShippingAddressScreen();
+                    }));
+                  },
+                  child: Center(
+                    child: Text(
+                      'Please enter your shipping address',
+                      style: GoogleFonts.montserrat(
+                        color: const Color(0xFF3854EE),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ),
+                )
+              : ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF3854EE),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _showAddressPrompt = true;
+                    });
+                  },
+                  child: Text(
+                    selectPaymentMethod == 'stripe' ? 'Pay Now' : 'Place Order',
+                    style: GoogleFonts.montserrat(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
         ),
       ),
     );

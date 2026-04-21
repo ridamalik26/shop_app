@@ -6,12 +6,13 @@ import '../global_variables.dart';
 
 
 class OrderController {
-  uploadOrders({
+  Future<void> uploadOrders({
     required String id,
     required String fullName,
     required String email,
     required String state,
     required String city,
+    required String locality,
     required String productName,
     required int quantity,
     required int productPrice,
@@ -32,6 +33,7 @@ class OrderController {
           email: email,
           state: state,
           city: city,
+          locality: locality,
           productName: productName,
           quantity: quantity,
           productPrice: productPrice,

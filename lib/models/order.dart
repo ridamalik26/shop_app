@@ -6,6 +6,7 @@ class Order {
   final String email;
   final String state;
   final String city;
+  final String locality;
   final String productName;
   final int quantity;
   final int productPrice;
@@ -16,7 +17,23 @@ class Order {
   final bool processing;
   final bool delivered;
 
-  Order({required this.id, required this.fullName, required this.email, required this.state, required this.city, required this.productName, required this.quantity, required this.productPrice, required this.category, required this.image, required this.buyerId, required this.vendorId, required this.processing, required this.delivered});
+  Order({
+    required this.id,
+    required this.fullName,
+    required this.email,
+    required this.state,
+    required this.city,
+    required this.locality,
+    required this.productName,
+    required this.quantity,
+    required this.productPrice,
+    required this.category,
+    required this.image,
+    required this.buyerId,
+    required this.vendorId,
+    required this.processing,
+    required this.delivered,
+  });
 
   Map<String, dynamic> toMap() {
     return {
@@ -25,6 +42,7 @@ class Order {
       'email': email,
       'state': state,
       'city': city,
+      'locality': locality,
       'productName': productName,
       'quantity': quantity,
       'productPrice': productPrice,
@@ -44,6 +62,7 @@ class Order {
       email: map['email'] ?? '',
       state: map['state'] ?? '',
       city: map['city'] ?? '',
+      locality: map['locality'] ?? '',
       productName: map['productName'] ?? '',
       quantity: map['quantity'] ?? 0,
       productPrice: map['productPrice'] ?? 0,

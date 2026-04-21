@@ -90,4 +90,7 @@ class CartNotifier extends StateNotifier<Map<String, Cart>> {
 
     return totalAmount;
   }
+
+  Map<String, Cart> get getCartItems => state;
+
 }
