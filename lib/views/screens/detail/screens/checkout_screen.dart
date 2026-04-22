@@ -34,7 +34,11 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
+                    return ShippingAddressScreen();
+                  }));
+                },
                 child: Container(
                   width: double.infinity,
                   height: 74,
