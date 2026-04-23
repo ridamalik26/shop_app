@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shop_app/controllers/order_controller.dart';
 import 'package:shop_app/provider/cart_provider.dart';
+import 'package:shop_app/provider/user_provider.dart';
 import 'package:shop_app/views/screens/detail/screens/shipping_address_screen.dart';
 
 class CheckoutScreen extends ConsumerStatefulWidget {
@@ -14,7 +15,6 @@ class CheckoutScreen extends ConsumerStatefulWidget {
 
 class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
   String selectPaymentMethod = 'stripe';
-  bool _showAddressPrompt = false;
   final OrderController _orderController = OrderController();
   @override
   Widget build(BuildContext context) {
@@ -272,10 +272,10 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
         padding: const EdgeInsets.fromLTRB(25, 12, 25, 24),
         child: SizedBox(
           height: 58,
-          child: _showAddressPrompt
+          child: (ref.watch(userProvider)?.state ?? '').isEmpty
               ? GestureDetector(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
                       return const ShippingAddressScreen();
                     }));
                   },
@@ -298,11 +298,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                       borderRadius: BorderRadius.circular(15),
                     ),
                   ),
-                  onPressed: () {
-                    setState(() {
-                      _showAddressPrompt = true;
-                    });
-                  },
+                  onPressed: () {},
                   child: Text(
                     selectPaymentMethod == 'stripe' ? 'Pay Now' : 'Place Order',
                     style: GoogleFonts.montserrat(

@@ -58,6 +58,7 @@ class AuthController {
   // -----------------------------
   Future<void> signInUsers({
     required context,
+    required WidgetRef ref,
     required String email,
     required String password,
   }) async {
@@ -77,27 +78,16 @@ class AuthController {
         response: response,
         context: context,
         onSuccess: () async {
-          //Access sharedPreferences for token and user data storage
           SharedPreferences preferences = await SharedPreferences.getInstance();
-
-          //Extract the authentication token from the response body
           String token = jsonDecode(response.body)['token'];
-          
-          //Store tne authentication token securely in sharedPreference
-          
           await preferences.setString('auth_token', token);
 
-          //Encode the user data received from the backend as json
           final userJson = jsonEncode(jsonDecode(response.body)['user']);
 
-          //update the application state with the user data using Riverpod
-          providerContainer.read(userProvider.notifier).setUser(userJson);
-
-          //store the data in sharePreference for future use
-
+          ref.read(userProvider.notifier).setUser(userJson);
           await preferences.setString('user', userJson);
-          
-          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> MainScreen()), (route) => false);
+
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MainScreen()), (route) => false);
           showSnackBar(context, "Login Successful");
         },
       );
