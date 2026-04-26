@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shop_app/controllers/auth_controller.dart';
-import 'package:shop_app/models/users.dart';
 
 import '../../../../provider/user_provider.dart';
 
@@ -16,9 +15,9 @@ class ShippingAddressScreen extends ConsumerStatefulWidget {
 class _ShippingAddressScreenState extends ConsumerState<ShippingAddressScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final AuthController _authController = AuthController();
-  late String state;
-  late String city;
-  late String locality;
+  String state = '';
+  String city = '';
+  String locality = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -114,24 +113,11 @@ class _ShippingAddressScreenState extends ConsumerState<ShippingAddressScreen> {
             if (_formKey.currentState!.validate()) {
               await _authController.updateUserLocation(
                   context: context,
+                  ref: ref,
                   id: ref.read(userProvider)!.id,
                   state: state,
                   city: city,
                   locality: locality);
-
-              final currentUser = ref.read(userProvider)!;
-              ref.read(userProvider.notifier).setUser(
-                User(
-                  id: currentUser.id,
-                  fullName: currentUser.fullName,
-                  email: currentUser.email,
-                  state: state,
-                  city: city,
-                  locality: locality,
-                  password: currentUser.password,
-                  token: currentUser.token,
-                ).toJson(),
-              );
 
               Navigator.pop(context);
             }

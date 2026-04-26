@@ -116,19 +116,17 @@ class AuthController {
   //Update user's state,city and locality
   Future<void> updateUserLocation({
     required context,
+    required WidgetRef ref,
     required String id,
     required String state,
     required String city,
     required String locality,
   })async{
     try{
-      //make an HTTP put request to update user's state, city and locality
       final http.Response response = await http.put(Uri.parse('$uri/api/users/$id'),
-        //set the header for the request to specify that the
         headers: <String, String>{
           "Content-Type": 'application/json; charset=UTF-8'
         },
-        //Encode the update data(state, city and locality) as json object
         body: jsonEncode({
           'state':state,
           'city':city,
@@ -139,26 +137,15 @@ class AuthController {
           response: response,
           context: context,
           onSuccess: () async{
-        //decode the updated user data from the response body
-        //this converts the json String response into Dart Map
             final updatedUser = jsonDecode(response.body);
-            //Access Shared preference for local data storing
-            //shared preference allow us to store data persistently on the device
             SharedPreferences preferences = await SharedPreferences.getInstance();
-            //Encode the update user data as json String
-            //this prepares the data for storage in shared preferences
             final userJson = jsonEncode(updatedUser);
-            //update the application state with the updated user data user in riverpod
-            //this ensures the app reflects the most recent user data
-            providerContainer.read(userProvider.notifier).setUser(userJson);
-
-            //store the updated user data in shared preference for future user
-            //this allows the app to retrieve the user data even after the app restarts
+            // Update Riverpod state so the UI reflects the new address
+            ref.read(userProvider.notifier).setUser(userJson);
+            // Persist updated user data so it survives app restarts
             await preferences.setString('user', userJson);
       });
     }catch (e) {
-      //catch any error that occur during the process
-      //show an error message to the user if the update fails
       showSnackBar(context, 'Error updating location');
     }
   }
