@@ -41,13 +41,21 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
         context: context,
       );
     }
+
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Your order has been placed')),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final cartData = ref.watch(cartProvider);
     final user = ref.watch(userProvider);
-    final hasAddress = (user?.state ?? '').isNotEmpty;
+    final hasAddress = (user?.state ?? '').trim().isNotEmpty &&
+        (user?.city ?? '').trim().isNotEmpty &&
+        (user?.locality ?? '').trim().isNotEmpty;
 
     return Scaffold(
       appBar: AppBar(
@@ -301,18 +309,18 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                 borderRadius: BorderRadius.circular(15),
               ),
             ),
-            onPressed: () {
+            onPressed: () async {
               final u = ref.read(userProvider);
-              if ((u?.state ?? '').isEmpty ||
-                  (u?.city ?? '').isEmpty ||
-                  (u?.locality ?? '').isEmpty) {
+              if ((u?.state ?? '').trim().isEmpty ||
+                  (u?.city ?? '').trim().isEmpty ||
+                  (u?.locality ?? '').trim().isEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text('Please enter your shipping address'),
                   ),
                 );
               } else {
-                _placeOrder(context);
+                await _placeOrder(context);
               }
             },
             child: Text(

@@ -51,9 +51,7 @@ class OrderController {
               },
       );
       manageHttpResponse(
-          response: response, context: context, onSuccess: (){
-            showSnackBar(context, 'Your order has been placed');
-      });
+          response: response, context: context, onSuccess: () {});
     }catch (e){
       showSnackBar(context, e.toString());
     }

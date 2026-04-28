@@ -121,31 +121,37 @@ class AuthController {
     required String state,
     required String city,
     required String locality,
-  })async{
-    try{
-      final http.Response response = await http.put(Uri.parse('$uri/api/users/$id'),
+  }) async {
+    try {
+      final http.Response response = await http.put(
+        Uri.parse('$uri/api/users/$id'),
         headers: <String, String>{
-          "Content-Type": 'application/json; charset=UTF-8'
+          'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode({
-          'state':state,
-          'city':city,
-          'locality':locality,
+          'state': state,
+          'city': city,
+          'locality': locality,
         }),
       );
+
+      bool success = false;
       manageHttpResponse(
-          response: response,
-          context: context,
-          onSuccess: () async{
-            final updatedUser = jsonDecode(response.body);
-            SharedPreferences preferences = await SharedPreferences.getInstance();
-            final userJson = jsonEncode(updatedUser);
-            // Update Riverpod state so the UI reflects the new address
-            ref.read(userProvider.notifier).setUser(userJson);
-            // Persist updated user data so it survives app restarts
-            await preferences.setString('user', userJson);
-      });
-    }catch (e) {
+        response: response,
+        context: context,
+        onSuccess: () { success = true; },
+      );
+
+      if (success) {
+        // Await SharedPreferences here (outside the VoidCallback) so setUser
+        // is guaranteed to run before updateUserLocation's Future completes,
+        // and therefore before Navigator.pop fires in ShippingAddressScreen.
+        final userJson = response.body;
+        ref.read(userProvider.notifier).setUser(userJson);
+        final preferences = await SharedPreferences.getInstance();
+        await preferences.setString('user', userJson);
+      }
+    } catch (e) {
       showSnackBar(context, 'Error updating location');
     }
   }
