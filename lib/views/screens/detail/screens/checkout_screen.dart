@@ -10,6 +10,7 @@ class CheckoutScreen extends ConsumerStatefulWidget {
   const CheckoutScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _CheckoutScreenState createState() => _CheckoutScreenState();
 }
 
@@ -135,10 +136,10 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                           ],
                         ),
                       ),
-                      Image.network(
-                        width: 20,
-                        height: 20,
-                        'https://firebasestorage.googleapis.com/v0/b/codeless-app.appspot.com/o/projects%2Fnn2Ldqjoc2Xp89Y7Wfzf%2F6ce18a0efc6e889de2f2878027c689c9caa53feeedit%201.png?alt=media&token=a3a8a999-80d5-4a2e-a9b7-a43a7fa8789a',
+                      const Icon(
+                        Icons.chevron_right,
+                        color: Colors.grey,
+                        size: 20,
                       ),
                       const SizedBox(width: 16),
                     ],
@@ -259,40 +260,36 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Column(
-                children: [
-                  RadioListTile<String>(
-                    title: Text(
-                      'Stripe',
-                      style: GoogleFonts.montserrat(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
+              RadioGroup<String>(
+                groupValue: selectPaymentMethod,
+                onChanged: (String? value) {
+                  setState(() {
+                    selectPaymentMethod = value!;
+                  });
+                },
+                child: Column(
+                  children: [
+                    RadioListTile<String>(
+                      title: Text(
+                        'Stripe',
+                        style: GoogleFonts.montserrat(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
                       ),
+                      value: 'stripe',
                     ),
-                    value: 'stripe',
-                    groupValue: selectPaymentMethod,
-                    onChanged: (String? value) {
-                      setState(() {
-                        selectPaymentMethod = value!;
-                      });
-                    },
-                  ),
-                  RadioListTile<String>(
-                    title: Text(
-                      'Cash on Delivery',
-                      style: GoogleFonts.montserrat(
-                        fontWeight: FontWeight.bold,
+                    RadioListTile<String>(
+                      title: Text(
+                        'Cash on Delivery',
+                        style: GoogleFonts.montserrat(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
+                      value: 'cashOnDelivery',
                     ),
-                    value: 'cashOnDelivery',
-                    groupValue: selectPaymentMethod,
-                    onChanged: (String? value) {
-                      setState(() {
-                        selectPaymentMethod = value!;
-                      });
-                    },
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),

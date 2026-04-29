@@ -11,6 +11,7 @@ class ProductDetailScreen extends ConsumerStatefulWidget {
   const ProductDetailScreen({super.key, required this.product});
 
   @override
+  // ignore: library_private_types_in_public_api
   _ProductDetailScreenState createState() => _ProductDetailScreenState();
 }
 
