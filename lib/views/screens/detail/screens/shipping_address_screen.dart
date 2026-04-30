@@ -20,6 +20,7 @@ class _ShippingAddressScreenState extends ConsumerState<ShippingAddressScreen> {
   String locality = '';
   @override
   Widget build(BuildContext context) {
+    final updateUser = ref.read(userProvider.notifier);
     return Scaffold(
       backgroundColor: Colors.white.withValues(alpha: 0.96),
       appBar: AppBar(
@@ -117,9 +118,15 @@ class _ShippingAddressScreenState extends ConsumerState<ShippingAddressScreen> {
                   id: ref.read(userProvider)!.id,
                   state: state,
                   city: city,
-                  locality: locality);
+                  locality: locality,
+              )
+                  .whenComplete((){
+                    updateUser.recreateUserState(
+                        state: state, city: city, locality: locality);
 
-              Navigator.pop(context);
+                    Navigator.pop(context);
+              });
+
             }
           },
           child: Container(
