@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shop_app/controllers/order_controller.dart';
 import 'package:shop_app/provider/order_provider.dart';
 import 'package:shop_app/provider/user_provider.dart';
@@ -105,6 +106,56 @@ class _OrderScreenState extends ConsumerState<OrderScreen> {
                             ),
                           ),
                         ),
+                        Positioned(
+                          left: 101,
+                            top: 14,
+                            child: SizedBox(
+                              width: 216,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(child: SizedBox(
+                                    width: double.infinity,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        SizedBox(
+                                          width: double.infinity,
+                                          child: Text(
+                                            order.productName,
+                                            style: GoogleFonts.montserrat(
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 4,),
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                              order.category,
+                                              style: GoogleFonts.montserrat(
+                                                color: const Color(0xFF7F808C),
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 12
+                                              ),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 2,),
+                                        Text(
+                                          "\$${order.productPrice.toStringAsFixed(2)}",
+                                          style: GoogleFonts.montserrat(
+                                            fontSize: 15,
+                                            color: Color(0xFF0B0C1E,)
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ))
+                                ],
+                              ),
+                            ))
                       ],
                     ),
                 ),
