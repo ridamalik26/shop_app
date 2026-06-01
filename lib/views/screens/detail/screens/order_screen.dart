@@ -155,7 +155,46 @@ class _OrderScreenState extends ConsumerState<OrderScreen> {
                                   ))
                                 ],
                               ),
-                            ))
+                            ),
+                        ),
+                        Positioned(
+                            left: 13,
+                            top: 113,
+                            child: Container(
+                              width: 100,
+                              height: 25,
+                              clipBehavior: Clip.antiAlias,
+                              decoration: BoxDecoration(
+                                color: order.delivered==true
+                                    ? const Color(0xFF3C55EF):
+                                order.processing==true?
+                                  Colors.purple:Colors.red,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: Stack(
+                                clipBehavior: Clip.none,
+                                children: [
+                                  Positioned(
+                                      left: 9,
+                                      top: 3,
+                                      child: Text(
+                                        order.delivered==true
+                                            ?"Delivered"
+                                            : order.processing == true
+                                            ? "Processing"
+                                            : "Cancelled",
+                                        style: GoogleFonts.montserrat(
+                                          color: Colors.white,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold,
+                                          letterSpacing: 1.3,
+                                        ),
+                                      ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                        ),
                       ],
                     ),
                 ),
