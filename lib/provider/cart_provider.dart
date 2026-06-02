@@ -80,6 +80,11 @@ class CartNotifier extends StateNotifier<Map<String, Cart>> {
     state = {...state};
   }
 
+  // CLEAR ALL CART ITEMS
+  void clearCart() {
+    state = {};
+  }
+
   // CALCULATE TOTAL CART AMOUNT
   double calculateTotalAmount() {
     double totalAmount = 0.0;

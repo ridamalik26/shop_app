@@ -53,6 +53,14 @@ class _OrderScreenState extends ConsumerState<OrderScreen> {
             child: Stack(
               children: [
                 Positioned(
+                  left: 16,
+                  top: 48,
+                  child: GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: const Icon(Icons.arrow_back, color: Colors.white, size: 26),
+                  ),
+                ),
+                Positioned(
                   left: 322,
                   top: 52,
                   child: Stack(
@@ -104,6 +112,7 @@ class _OrderScreenState extends ConsumerState<OrderScreen> {
         ),
       body: orders.isEmpty?Center(child: Text('No Order Found'),):
           ListView.builder(
+              physics: const AlwaysScrollableScrollPhysics(),
               itemCount: orders.length,
               itemBuilder: (context, index){
             final Order order = orders[index];

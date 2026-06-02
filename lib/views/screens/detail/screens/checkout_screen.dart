@@ -15,6 +15,7 @@ class CheckoutScreen extends ConsumerStatefulWidget {
 
 class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
   String selectPaymentMethod = 'stripe';
+  bool _isPlacingOrder = false;
   final OrderController _orderController = OrderController();
 
   Future<void> _placeOrder(BuildContext context) async {
@@ -42,6 +43,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
       );
     }
 
+    ref.read(cartProvider.notifier).clearCart();
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Your order has been placed')),
@@ -305,28 +307,38 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                 borderRadius: BorderRadius.circular(15),
               ),
             ),
-            onPressed: () async {
-              final u = ref.read(userProvider);
-              if ((u?.state ?? '').trim().isEmpty ||
-                  (u?.city ?? '').trim().isEmpty ||
-                  (u?.locality ?? '').trim().isEmpty) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Please enter your shipping address'),
+            onPressed: _isPlacingOrder
+                ? null
+                : () async {
+                    final u = ref.read(userProvider);
+                    if ((u?.state ?? '').trim().isEmpty ||
+                        (u?.city ?? '').trim().isEmpty ||
+                        (u?.locality ?? '').trim().isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Please enter your shipping address'),
+                        ),
+                      );
+                    } else {
+                      setState(() => _isPlacingOrder = true);
+                      await _placeOrder(context);
+                      if (mounted) setState(() => _isPlacingOrder = false);
+                    }
+                  },
+            child: _isPlacingOrder
+                ? const SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2.5),
+                  )
+                : Text(
+                    selectPaymentMethod == 'stripe' ? 'Pay Now' : 'Place Order',
+                    style: GoogleFonts.montserrat(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
                   ),
-                );
-              } else {
-                await _placeOrder(context);
-              }
-            },
-            child: Text(
-              selectPaymentMethod == 'stripe' ? 'Pay Now' : 'Place Order',
-              style: GoogleFonts.montserrat(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ),
-            ),
           ),
         ),
       ),
