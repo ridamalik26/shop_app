@@ -281,7 +281,9 @@ class _OrderScreenState extends ConsumerState<OrderScreen> {
                               left: 298,
                               child: InkWell(
                                 onTap: (){
-                
+                                  Navigator.push(context,  MaterialPageRoute(builder: (context) {
+                                    return OrderDetailScreen(order: order);
+                                  }));
                                 },
                                 child: Image.asset('assets/icons/delete.png',
                                 width: 20,

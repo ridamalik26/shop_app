@@ -189,6 +189,71 @@ class OrderDetailScreen extends StatelessWidget {
               ),
             ),
           ),
+          Padding(
+              padding: const EdgeInsetsDirectional.symmetric(
+                horizontal: 20,
+                vertical: 10
+              ),
+            child: Container(
+              width: 336,
+              height: order.delivered==true? 170:120,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(
+                  color: const Color(
+                    0xFFEFF0F2,
+                  ),
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Delivery Address', style: GoogleFonts.montserrat(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1.7,
+                      ),
+                      ),
+                      const SizedBox(height: 8,),
+                      Text(
+                        "${order.state} ${order.city} ${order.locality}",
+                        style: GoogleFonts.lato(
+                          letterSpacing: 1.5,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Text("To :  ${order.fullName}", style: GoogleFonts.roboto(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      ),
+                      Text(
+                        "Order Id:  ${order.id}",
+                        style: GoogleFonts.lato(
+                          fontWeight: FontWeight.bold,
+                        ) ,)
+                    ],
+                  ),
+                  ),
+                  order.delivered==true
+                      ? TextButton(
+                      onPressed: (){},
+                      child: Text('Leave a review ', style: GoogleFonts.montserrat(
+                        fontWeight: FontWeight.bold,
+                      ),),
+                  )
+                      : SizedBox()
+                ],
+              ),
+            ),
+          )
         ],
       ),
     );
