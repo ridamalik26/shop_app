@@ -90,4 +90,20 @@ class OrderController {
         throw Exception('error Loading Orders: $e');
     }
   }
+
+  Future<void> deleteOrder({required String id, required context})async{
+    try{
+      http.Response response = await http.delete(Uri.parse("$uri/api/orders/$id"),
+        headers: <String, String>{
+          "Content-Type": 'application/json; charset=UTF-8'
+        },
+      );
+      manageHttpResponse(response: response, context: context, onSuccess: () {
+        
+      });
+    }
+  catch (e) {
+      showSnackBar(context, e.toString());
+  }
+  }
 }
