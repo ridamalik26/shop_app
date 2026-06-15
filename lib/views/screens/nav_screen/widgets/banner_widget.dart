@@ -41,21 +41,19 @@ class _BannerWidgetState extends ConsumerState<BannerWidget> {
           color: const Color(0xFFF7F7F7),
           borderRadius: BorderRadius.circular(4),
         ),
-        child: Expanded(
-          child: PageView.builder(
-            itemCount: banners.length,
-            itemBuilder: (context, index) {
-              final banner = banners[index];
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Image.network(
-                  banner.image,
-                  fit: BoxFit.cover,
-                ),
-              );
-            },
-          ),
-        )
+        child: PageView.builder(
+          itemCount: banners.length,
+          itemBuilder: (context, index) {
+            final banner = banners[index];
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Image.network(
+                banner.image,
+                fit: BoxFit.cover,
+              ),
+            );
+          },
+        ),
       );
   }
 }
