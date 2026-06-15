@@ -45,7 +45,8 @@ class OrderController {
           buyerId: buyerId,
           vendorId: vendorId,
           processing: processing,
-          delivered: delivered);
+          delivered: delivered
+      );
 
       http.Response response =  await http.post(Uri.parse("$uri/api/orders"),
         body: order.toJson(),
