@@ -1,19 +1,32 @@
+import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shop_app/controllers/product_review.dart';
 
 import '../../../../models/order.dart';
 
 
-class OrderDetailScreen extends StatelessWidget {
+class OrderDetailScreen extends StatefulWidget {
   final Order order;
 
   const OrderDetailScreen({super.key, required this.order});
 
   @override
+  State<OrderDetailScreen> createState() => _OrderDetailScreenState();
+}
+
+class _OrderDetailScreenState extends State<OrderDetailScreen> {
+  final TextEditingController _reviewController = TextEditingController();
+
+  double rating = 0.0;
+
+  final ProductReviewController _productReviewController = ProductReviewController();
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(order.productName,
+        title: Text(widget.order.productName,
         style: GoogleFonts.montserrat(
             fontWeight: FontWeight.bold,
         ),
@@ -69,7 +82,7 @@ class OrderDetailScreen extends StatelessWidget {
                                   Positioned(
                                     left: 10,
                                     top: 5,
-                                    child: Image.network(order.image,
+                                    child: Image.network(widget.order.image,
                                       width: 58,
                                       height: 67,
                                       fit: BoxFit.cover,
@@ -100,7 +113,7 @@ class OrderDetailScreen extends StatelessWidget {
                                 SizedBox(
                                   width: double.infinity,
                                   child: Text(
-                                    order.productName,
+                                    widget.order.productName,
                                     style: GoogleFonts.montserrat(
                                       fontWeight: FontWeight.w700,
                                       fontSize: 16,
@@ -111,7 +124,7 @@ class OrderDetailScreen extends StatelessWidget {
                                 Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    order.category,
+                                    widget.order.category,
                                     style: GoogleFonts.montserrat(
                                         color: const Color(0xFF7F808C),
                                         fontWeight: FontWeight.w600,
@@ -121,7 +134,7 @@ class OrderDetailScreen extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 2,),
                                 Text(
-                                  "\$${order.productPrice.toStringAsFixed(2)}",
+                                  "\$${widget.order.productPrice.toStringAsFixed(2)}",
                                   style: GoogleFonts.montserrat(
                                       fontSize: 15,
                                       color: Color(0xFF0B0C1E,)
@@ -142,9 +155,9 @@ class OrderDetailScreen extends StatelessWidget {
                       height: 25,
                       clipBehavior: Clip.antiAlias,
                       decoration: BoxDecoration(
-                        color: order.delivered==true
+                        color: widget.order.delivered==true
                             ? const Color(0xFF3C55EF):
-                        order.processing==true?
+                        widget.order.processing==true?
                         Colors.purple:Colors.red,
                         borderRadius: BorderRadius.circular(4),
                       ),
@@ -155,9 +168,9 @@ class OrderDetailScreen extends StatelessWidget {
                             left: 9,
                             top: 3,
                             child: Text(
-                              order.delivered==true
+                              widget.order.delivered==true
                                   ?"Delivered"
-                                  : order.processing == true
+                                  : widget.order.processing == true
                                   ? "Processing"
                                   : "Cancelled",
                               style: GoogleFonts.montserrat(
@@ -196,7 +209,7 @@ class OrderDetailScreen extends StatelessWidget {
               ),
             child: Container(
               width: 336,
-              height: order.delivered==true? 170:120,
+              height: widget.order.delivered==true? 170:120,
               decoration: BoxDecoration(
                 color: Colors.white,
                 border: Border.all(
@@ -223,33 +236,66 @@ class OrderDetailScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 8,),
                       Text(
-                        "${order.state} ${order.city} ${order.locality}",
+                        "${widget.order.state} ${widget.order.city} ${widget.order.locality}",
                         style: GoogleFonts.lato(
                           letterSpacing: 1.5,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      Text("To :  ${order.fullName}", style: GoogleFonts.roboto(
+                      Text("To :  ${widget.order.fullName}", style: GoogleFonts.roboto(
                         fontSize: 17,
                         fontWeight: FontWeight.bold,
                       ),
                       ),
                       Text(
-                        "Order Id:  ${order.id}",
+                        "Order Id:  ${widget.order.id}",
                         style: GoogleFonts.lato(
                           fontWeight: FontWeight.bold,
                         ) ,)
                     ],
                   ),
                   ),
-                  order.delivered==true
+                  widget.order.delivered==true
                       ? TextButton(
-                      onPressed: (){},
+                      onPressed: (){
+                        showDialog(context: context, builder: (context){
+                          return AlertDialog(
+                            title: Text('Leave a review'),
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                TextFormField(
+                                  controller: _reviewController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Your Review'
+                                  ),
+                                ),
+                                RatingBar(
+                                  filledIcon: Icons.star,
+                                  emptyIcon: Icons.star_border,
+                                  onRatingChanged: (value) {
+                                    rating = value;
+                                  },
+                                  initialRating: 1,
+                                  maxRating: 5,
+                                ),
+                              ],
+                            ),
+                            actions: [
+                              TextButton(onPressed: (){
+                                final review = _reviewController.text;
+                                _productReviewController.uploadReview(buyerId: widget.order.buyerId, email: widget.order.buyerId, fullName: widget.order.fullName, productId: widget.order.id, rating: rating, review: review, context: context);
+                              }, child: const Text('Submit'),
+                              )
+                            ],
+                          );
+                        });
+                      },
                       child: Text('Leave a review ', style: GoogleFonts.montserrat(
                         fontWeight: FontWeight.bold,
                       ),),
                   )
-                      : SizedBox()
+                      : const SizedBox()
                 ],
               ),
             ),
