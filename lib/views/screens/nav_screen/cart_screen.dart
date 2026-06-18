@@ -86,7 +86,8 @@ class _CartScreenState extends ConsumerState<CartScreen> {
             ),
           ),
       ),
-      body: cartData.isEmpty?Center(
+      body: cartData.isEmpty
+          ?Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
