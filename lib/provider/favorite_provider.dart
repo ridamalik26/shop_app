@@ -1,6 +1,12 @@
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:shop_app/models/favorite.dart';
 
+final favoriteProvider = StateNotifierProvider<FavoriteNotifier,Map<String,Favorite>>(
+        (ref){
+      return FavoriteNotifier();
+    }
+);
+
 class FavoriteNotifier extends StateNotifier<Map<String,Favorite>>{
   FavoriteNotifier():super({});
 
@@ -23,6 +29,6 @@ class FavoriteNotifier extends StateNotifier<Map<String,Favorite>>{
     state.remove(productId);
     state = {...state};
   }
-  Map<String, Favorite> get getCartItems => state;
+  Map<String, Favorite> get getFavoriteItems => state;
 
 }
