@@ -21,8 +21,9 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   Widget build(BuildContext context) {
     final cartProviderData = ref.read(cartProvider.notifier);
     final favoriteProvideData = ref.read(favoriteProvider.notifier);
-    ref.watch(favoriteProvider);
+    final favoriteData = ref.watch(favoriteProvider);
     final cartData = ref.watch(cartProvider);
+    final isFavorited = favoriteData.containsKey(widget.product.id);
     final isInCart = cartData.containsKey(widget.product.id);
     return Scaffold(
       appBar: AppBar(
@@ -37,22 +38,27 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              favoriteProvideData.addProductToFavorite(
-                  productName: widget.product.productName,
-                  productPrice: widget.product.productPrice,
-                  category: widget.product.category,
-                  image: widget.product.images,
-                  vendorId: widget.product.vendorId,
-                  productQuantity: widget.product.quantity,
-                  quantity: 1,
-                  productId: "${widget.product.id}_${widget.product.images[0]}",
-                  description: widget.product.description,
-                  fullName: widget.product.fullName
-              );
-              showSnackBar(context, 'added ${widget.product.productName}');
+              if (isFavorited) {
+                favoriteProvideData.removeFavoriteItem(widget.product.id);
+                showSnackBar(context, 'removed ${widget.product.productName} from your wishlist');
+              } else {
+                favoriteProvideData.addProductToFavorite(
+                    productName: widget.product.productName,
+                    productPrice: widget.product.productPrice,
+                    category: widget.product.category,
+                    image: widget.product.images,
+                    vendorId: widget.product.vendorId,
+                    productQuantity: widget.product.quantity,
+                    quantity: 1,
+                    productId: widget.product.id,
+                    description: widget.product.description,
+                    fullName: widget.product.fullName);
+                showSnackBar(context, 'added ${widget.product.productName} to your wishlist');
+              }
             },
-            icon: favoriteProvideData.getFavoriteItems.containsKey(widget.product.id)?Icon(Icons.favorite,color: Colors.red,):
-                Icon(Icons.favorite_border)
+            icon: isFavorited
+                ? const Icon(Icons.favorite, color: Colors.red)
+                : const Icon(Icons.favorite_border),
           ),
         ],
       ),

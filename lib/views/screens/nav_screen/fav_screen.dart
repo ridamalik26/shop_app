@@ -106,105 +106,71 @@ class _FavScreenState extends ConsumerState<FavScreen> {
       ):
       ListView.builder(
         itemCount: wishItemData.length,
-          shrinkWrap: true,
-          itemBuilder:  (context, index) {
-            final wishData = wishItemData.values.toList()[index];
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          final wishData = wishItemData.values.toList()[index];
 
-            return Padding(padding: EdgeInsetsGeometry.all(8),
-            child: Center(
-              child: Container(
-                width: 335,
-                height: 96,
-                clipBehavior: Clip.antiAlias,
-                decoration: const BoxDecoration(),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      Positioned(
-                        left: 0,
-                        top: 0,
-                        child: Container(
-                          width: 336,
-                          height: 97,
-                          clipBehavior: Clip.antiAlias,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                              border: Border.all(
-                              color: const Color(0xFFEFF0F2),
-                          ),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 13,
-                          top: 9,
-                          child: Container(
-                            width: 78,
-                            clipBehavior: Clip.antiAlias,
-                            decoration: BoxDecoration(
-                              color: Color(0xFFBCC5FF),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                      ),
-                      Positioned(
-                        left: 275,
-                          top: 16,
-                          child: Text(
-                            '\$${ wishData.productPrice.toStringAsFixed(2)}',
-                          style: GoogleFonts.montserrat(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: const Color(0xFF0B0C1F)
-                          ),
-                          ),
-                      ),
-                      Positioned(
-                          left: 101,
-                          top: 14,
-                          child: SizedBox(
-                            width: 162,
-                            child: Text(
-                              wishData.productName,
-                              style: GoogleFonts.montserrat(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          )
-                      ),
-                      Positioned(
-                        left: 23,
-                        top: 14,
-                        child: Image.network(
-                          wishData.image[0],
-                          width: 56,
-                          height: 67,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                  Positioned(
-                    left: 284,
-                    top: 47,
-                    child: IconButton(
-                      onPressed: () {
-                        wishListProvider
-                            .removeFavoriteItem(wishData.productId);
-                      },
-                      icon: const Icon(
-                        Icons.delete,
-                      ),
+          return Card(
+            margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            color: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+              side: const BorderSide(color: Color(0xFFEFF0F2)),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.network(
+                      wishData.image[0],
+                      width: 64,
+                      height: 72,
+                      fit: BoxFit.cover,
                     ),
-                  )
-                    ]
                   ),
-                ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      wishData.productName,
+                      style: GoogleFonts.montserrat(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        '\$${wishData.productPrice.toStringAsFixed(2)}',
+                        style: GoogleFonts.montserrat(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: const Color(0xFF0B0C1F),
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          wishListProvider.removeFavoriteItem(wishData.productId);
+                        },
+                        icon: const Icon(Icons.delete),
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
-            );
-          }
+          );
+        },
       ),
     );
   }
