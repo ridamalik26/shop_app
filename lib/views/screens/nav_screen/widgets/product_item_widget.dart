@@ -21,6 +21,7 @@ class ProductItemWidget extends ConsumerStatefulWidget {
 class _ProductItemWidgetState extends ConsumerState<ProductItemWidget> {
   @override
   Widget build(BuildContext context) {
+
     final cartProviderData = ref.read(cartProvider.notifier);
     final cartData = ref.watch(cartProvider);
     final isInCart = cartData.containsKey(widget.product.id);
@@ -102,10 +103,27 @@ class _ProductItemWidgetState extends ConsumerState<ProductItemWidget> {
 
                         showSnackBar(context, widget.product.productName);
                       },
-                      child: Image.asset(
-                        'assets/icons/cart.png',
-                        height: 26,
-                        width: 26,
+                      child: InkWell(
+                        onTap: isInCart? null: (){
+                          cartProviderData.addProductToCart(
+                              productName: widget.product.productName,
+                              productPrice: widget.product.productPrice,
+                              category: widget.product.category,
+                              image: widget.product.images,
+                              vendorId: widget.product.vendorId,
+                              productQuantity: widget.product.quantity,
+                              quantity: 1,
+                              productId: "${widget.product.id}_${widget.product.images[0]}",
+                              description: widget.product.description,
+                              fullName: widget.product.fullName
+                          );
+                          showSnackBar(context, widget.product.productName);
+                        },
+                        child: Image.asset(
+                          'assets/icons/cart.png',
+                          height: 26,
+                          width: 26,
+                        ),
                       ),
                     ),
                   )
