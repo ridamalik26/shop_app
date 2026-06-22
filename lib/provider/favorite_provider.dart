@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter_riverpod/legacy.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shop_app/models/favorite.dart';
 
 final favoriteProvider = StateNotifierProvider<FavoriteNotifier,Map<String,Favorite>>(
@@ -9,6 +12,12 @@ final favoriteProvider = StateNotifierProvider<FavoriteNotifier,Map<String,Favor
 
 class FavoriteNotifier extends StateNotifier<Map<String,Favorite>>{
   FavoriteNotifier():super({});
+
+  Future<void> _saveFavorites()async{
+    final prefs = await SharedPreferences.getInstance();
+    final favoriteString =jsonEncode(state);
+    await prefs.setString('favorites', favoriteString);
+  }
 
   void addProductToFavorite({
     required String productName,
@@ -24,10 +33,12 @@ class FavoriteNotifier extends StateNotifier<Map<String,Favorite>>{
 }){
   state[productId] = Favorite(productName: productName, productPrice: productPrice, category: category, image: image, vendorId: vendorId, productQuantity: productQuantity, quantity: quantity, productId: productId, description: description, fullName: fullName);
   state = {...state};
+  _saveFavorites();
   }
   void removeFavoriteItem(String productId) {
     state.remove(productId);
     state = {...state};
+    _saveFavorites();
   }
   Map<String, Favorite> get getFavoriteItems => state;
 
